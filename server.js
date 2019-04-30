@@ -8,7 +8,7 @@ var port = process.env.PORT || 8000; // connection heroku
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
  */
-var rooms = 0;
+let roomArray=[/*{name:'', users:[]}*/];
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,7 +24,7 @@ console.log('user connected');
   
   var loggedUser; // Utilisateur connecté a la socket
   let roomID;
-  
+  // io.emit('room-list', roomArray)
   /**
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
@@ -35,18 +35,28 @@ console.log('user connected');
      console.log('user connected : ' + loggedUser.username);
     socket.emit('login', {userName: loggedUser.username});
     var message = {message: loggedUser.username + " joined the room"}
-      socket.to(roomID).broadcast.emit('chat-message', message);
-  
+    socket.to(roomID).broadcast.emit('chat-message', message);
+    io.emit('room-list', roomArray)
   });
    /**
    * Réception de l'événement 'room-service' et réémission vers tous les utilisateurs
    */
-  socket.on('sendRoom', function(room){
+  socket.on('sendRoom', function(data){
     socket.leave(roomID);
-    roomID = room.room;
-    console.log('[socket]','join room :',roomID)
-    socket.join(roomID)
-    socket.emit('room-service', roomID)
+    roomID = data.roomName;
+    console.log('[socket]','join room :',roomID);
+    socket.join(roomID);
+
+    if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
+    console.log('array check', roomArray)
+    socket.emit('room-service', roomID);
+    // io.emit('room-list', roomArray)
+  });
+
+  socket.on('leaveRoom', function(data){
+    socket.leave(data.roomName);
+    io.emit('room-list', roomArray)
+
   })
   
    /**
