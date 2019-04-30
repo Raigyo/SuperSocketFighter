@@ -23,29 +23,8 @@ io.on('connection', function (socket) {
 console.log('user connected');
   
   var loggedUser; // Utilisateur connecté a la socket
-  var roomId = socket.id;
-  var randomNumb = Math.floor(Math.random()*Math.floor(30));
-  var saloon = {
-    'id': roomId,
-    'nom': "Room/"+randomNumb
-  };
-  socket.emit('room-service', saloon);
-  console.log(saloon);
-
-  /**
-   * Déconnexion d'un utilisateur : broadcast d'un 'service-message'
-   */
-  socket.on('disconnect', function () {
-    if (loggedUser !== undefined) {
-      console.log('user disconnected : ' + loggedUser.username);
-      var serviceMessage = {
-        text: 'User "' + loggedUser.username + '" disconnected',
-        type: 'logout'
-      };
-      socket.broadcast.emit('service-message', serviceMessage);
-    }
-  });
-
+  let roomID;
+  
   /**
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
@@ -54,27 +33,44 @@ console.log('user connected');
   socket.on('user-login', function (user) {
     loggedUser = user;
      console.log('user connected : ' + loggedUser.username);
-    if (loggedUser !== undefined) {
-      var serviceMessage = {
-        userName: loggedUser.username,
-      };
-      socket.emit('login', serviceMessage);
-
-      var message = {
-        message: loggedUser.username + " joined the room"
-      }
-      socket.broadcast.emit('chat-message', message);
-    }
+    socket.emit('login', {userName: loggedUser.username});
+    var message = {message: loggedUser.username + " joined the room"}
+      socket.to(roomID).broadcast.emit('chat-message', message);
+  
   });
-
-  /**
+   /**
+   * Réception de l'événement 'room-service' et réémission vers tous les utilisateurs
+   */
+  socket.on('sendRoom', function(room){
+    socket.leave(roomID);
+    roomID = room.room;
+    console.log('[socket]','join room :',roomID)
+    socket.join(roomID)
+    socket.emit('room-service', roomID)
+  })
+  
+   /**
    * Réception de l'événement 'chat-message' et réémission vers tous les utilisateurs
    */
   socket.on('chat-message', function (message) {
-    console.log(message)
+    console.log('chat-message', message);
+    console.log('roomID', roomID);
     message.username = loggedUser.username + " says : ";
-    io.emit('chat-message', message);
+    io.to(roomID).emit('chat-message', message);
    
+  });
+  /**
+   * Déconnexion d'un utilisateur : broadcast d'un 'service-message'
+   */
+  socket.on('disconnect', function () {
+    if(loggedUser !== undefined){
+      console.log('user disconnected : ' + loggedUser.username);
+      var serviceMessage = {
+        text: 'User "' + loggedUser.username + '" disconnected',
+        type: 'logout'
+      };
+      socket.broadcast.emit('service-message', serviceMessage);
+    }
   });
 
 });
