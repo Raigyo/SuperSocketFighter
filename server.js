@@ -8,7 +8,15 @@ var port = process.env.PORT || 8000; // connection heroku
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
  */
-let roomArray=[/*{name:'', users:[]}*/];
+let roomArray=[/*{name:'', users:[]}*/]
+let usersList = [];
+
+// {
+//   id :  {
+//     name :'',
+//     users : []
+//   }
+// };
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,15 +32,14 @@ console.log('user connected');
   
   var loggedUser; // Utilisateur connecté a la socket
   let roomID;
-  // io.emit('room-list', roomArray)
   /**
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
-   *  - broadcast d'un 'service-message'
    */
   socket.on('user-login', function (user) {
     loggedUser = user;
-     console.log('user connected : ' + loggedUser.username);
+
+    console.log('user connected : ' + loggedUser.username);
     socket.emit('login', {userName: loggedUser.username});
     var message = {message: loggedUser.username + " joined the room"}
     socket.to(roomID).broadcast.emit('chat-message', message);
@@ -41,7 +48,8 @@ console.log('user connected');
    /**
    * Réception de l'événement 'room-service' et réémission vers tous les utilisateurs
    */
-  socket.on('sendRoom', function(data){
+
+  socket.on('createRoom', function(data){
     socket.leave(roomID);
     roomID = data.roomName;
     console.log('[socket]','join room :',roomID);
@@ -50,9 +58,33 @@ console.log('user connected');
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
     socket.emit('room-service', roomID);
-    // io.emit('room-list', roomArray)
+    
   });
+  /**
+   * Réception de l'événement 'joinRoom-service' et réémission vers tous les utilisateurs
+   */
+  socket.on('joinRoom', function(data){
+    console.log('joinRoom', data)
+    socket.leave(roomID);
+    roomID = data.roomName;
+    console.log(roomID)
 
+
+      socket.join(roomID)
+      socket.emit('room-service', roomID);
+      console.log('room clear')
+    clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
+    if(clientsInRoom === 2){ 
+      roomArray.splice(roomArray.indexOf(roomID),1)
+        console.log('room complet')
+      }
+    }
+  );
+  
+
+  /**
+   * Réception de l'événement 'romm-list' et réémission vers tous les utilisateurs
+   */
   socket.on('leaveRoom', function(data){
     socket.leave(data.roomName);
     io.emit('room-list', roomArray)
