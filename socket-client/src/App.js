@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './index.css';
 import io from "socket.io-client";
+import  Game from './game';
 
 var socket;
 
@@ -83,7 +84,9 @@ class Chat extends Component{
     // console.log(this.state);
     console.log(this.state)
     return (
-      <>        
+
+      <>     
+        <Game />   
         { this.state.session ?
           <div>
            {  !this.state.room_check ?
