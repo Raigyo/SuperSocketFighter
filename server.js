@@ -64,16 +64,15 @@ console.log('user connected');
    * Réception de l'événement 'joinRoom-service' et réémission vers tous les utilisateurs
    */
   socket.on('joinRoom', function(data){
-    console.log('joinRoom', data)
+      console.log('joinRoom', data)
     socket.leave(roomID);
     roomID = data.roomName;
-    console.log(roomID)
-
-
-      socket.join(roomID)
-      socket.emit('room-service', roomID);
+      console.log(roomID)
+    socket.join(roomID)
+     socket.emit('room-service', roomID);
       console.log('room clear')
     clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
+    
     if(clientsInRoom === 2){ 
       roomArray.splice(roomArray.indexOf(roomID),1)
         console.log('room complet')
@@ -86,6 +85,20 @@ console.log('user connected');
    * Réception de l'événement 'romm-list' et réémission vers tous les utilisateurs
    */
   socket.on('leaveRoom', function(data){
+    roomID = data.roomName;
+    clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
+    
+    if(clientsInRoom >1){ 
+      if(roomArray.indexOf(roomID) === -1)  {
+        roomArray.push(roomID)
+        console.log('room un place')
+      }
+    }
+
+    else if(clientsInRoom ===1)  {
+      roomArray.splice(roomArray.indexOf(roomID),1)
+
+    }
     socket.leave(data.roomName);
     io.emit('room-list', roomArray)
 
