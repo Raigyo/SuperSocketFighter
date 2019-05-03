@@ -8,24 +8,15 @@ var port = process.env.PORT || 8000; // connection heroku
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
  */
-let roomArray=[/*{name:'', users:[]}*/]
+let roomArray=[]
 let usersList = [];
 
-// {
-//   id :  {
-//     name :'',
-//     users : []
-//   }
-// };
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/socket-client/public/index.html');
 });
-//app.get('/:room?', function(req, res) {res.sendFile('index.html', {root: __dirname});});
-
-
 
 io.on('connection', function (socket) {
 console.log('user connected');
@@ -114,6 +105,19 @@ console.log('user connected');
     io.to(roomID).emit('chat-message', message);
    
   });
+
+  /**
+   Le jeu de dames 
+   *****************************************
+  */
+
+  socket.on('handleClick', function(data){
+    console.log('handleClick', data);
+     io.emit('click', "coucou")
+
+
+  }) 
+  
   /**
    * Déconnexion d'un utilisateur : broadcast d'un 'service-message'
    */
