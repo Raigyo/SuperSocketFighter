@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
+import io from "socket.io-client";
+
+let socket;
 
 /* const with that displays the move of the player */
 
@@ -37,6 +40,7 @@ class App extends Component {
     this.playerChoice = this.playerChoice.bind(this)
     this.symbols = ["rock", "paper", "scissors", "lizard", "spock"]
     this.state = {
+      endpoint: "localhost:8000",
       playerRedDisplay: this.symbols[0],
       playerBlueDisplay: this.symbols[0],
       round: 1,
@@ -52,16 +56,25 @@ class App extends Component {
       healthRyu: 100,
       healthChun: 100,
     }
+    socket = io(this.state.endpoint);
   }
 
   /* function to make a move*/
 
   playerChoice = (move) => {
         this.setState({
-          playerRed: this.symbols[move],
-          playerBlue: this.symbols[Math.floor(Math.random()*5)],
+          /*playerRed: this.symbols[move],
+          playerBlue: this.symbols[Math.floor(Math.random()*5)],*/
           nextFight: true,
         })
+        socket.emit('move-message', {playerRed: this.symbols[move]})
+  }
+
+  componentDidMount(){
+  // reception des messages
+    socket.on('move-message', (data) =>{
+      this.setState({moves: data});
+    });
   }
 
 /* function to launch the next round */
@@ -163,6 +176,8 @@ class App extends Component {
       animationPlayerTwo: "p2-idle",
     })
   }
+
+
 
   render(){
     const nextMove = this.state.nextMove;

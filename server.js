@@ -112,6 +112,16 @@ console.log('user connected');
 
   });
 
+/* check moves player 1 */
+  socket.on('move-message', function (message) {
+    console.log("user:" + loggedUser.username);
+    console.log('move-message', message);
+    /*console.log('roomID', roomID);
+    message.username = loggedUser.username + " says : ";
+    io.to(roomID).emit('chat-message', message);*/
+
+  });
+
   /**
    Le jeu de dames
    *****************************************
