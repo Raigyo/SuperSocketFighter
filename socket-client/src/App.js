@@ -3,7 +3,7 @@ import './index.css';
 import io from "socket.io-client";
 import  Game from './game';
 
-var socket;
+let socket;
 
 class Chat extends Component{
   constructor(props){
@@ -12,7 +12,7 @@ class Chat extends Component{
     this.login = this.login.bind(this);
     this.createRoom = this.createRoom.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
-    
+
     this.state = {
       endpoint: "localhost:8000",
       username: '',
@@ -24,7 +24,7 @@ class Chat extends Component{
       room_check: false, //boolean pour switch l'opérateur ternaire
     };
     socket = io(this.state.endpoint);
-  }  
+  }
 
   login(event) {
     event.preventDefault();
@@ -38,7 +38,7 @@ class Chat extends Component{
     event.preventDefault();
     if(this.state.room !== ""){this.setState({room_check: true})
     socket.emit('createRoom',{roomName: this.state.room, user: this.state.username})
-   
+
     }
      this.setState({room: ''});
   }
@@ -69,7 +69,7 @@ class Chat extends Component{
     socket.on('login',(data) => {
       this.setState({username: data.userName});
     });
-    
+
     socket.on('room-service',(data) => {
       this.setState({room: data});
     });
@@ -85,31 +85,31 @@ class Chat extends Component{
     console.log(this.state)
     return (
 
-      <>     
-        <Game />   
+      <>
+        <Game />
         { this.state.session ?
           <div>
            {  !this.state.room_check ?
             <div>
-              
+
               <section className="chat">
                   {this.state.rooms.map(item => {
                     return (
                       <div>{item}
-                      <button onClick={()=>this.joinRoom(item)}>Join room</button> 
-                      
+                      <button onClick={()=>this.joinRoom(item)}>Join room</button>
+
 
                       </div>
                     )}
                   )}
               </section>
-              
+
               <form>
                 <input
                   className="m"
                   autoComplete="off"
                   value={this.state.room}
-                  onChange={ev => this.setState({room: ev.target.value})}/> 
+                  onChange={ev => this.setState({room: ev.target.value})}/>
                 <button onClick={this.createRoom}>Create room</button>
               </form>
               <h5>Hello {this.state.username}</h5>
@@ -125,7 +125,7 @@ class Chat extends Component{
                   className="m"
                   autoComplete="off"
                   value={this.state.message}
-                  onChange={ev => this.setState({message: ev.target.value})}/> 
+                  onChange={ev => this.setState({message: ev.target.value})}/>
                 <button onClick={this.sendMessage}>Send</button>
               </form>
               <section className="chat">
@@ -143,7 +143,7 @@ class Chat extends Component{
             <form action="">
               <label htmlFor="u">Username </label>
               <input
-                className="u" 
+                className="u"
                 onChange={ev => this.setState({username: ev.target.value})}
                 autoComplete="off"
                 autoFocus />
@@ -151,12 +151,9 @@ class Chat extends Component{
             </form>
           </section>
         }
-         
+
       </>
     );
   }
 }
 export default Chat;
-
-
-

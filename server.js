@@ -1,9 +1,9 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var path = require ('path');
-var port = process.env.PORT || 8000; // connection heroku
+let express = require('express');
+let app = express();
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
+let path = require ('path');
+let port = process.env.PORT || 8000; // connexion heroku
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -20,8 +20,8 @@ app.get('/', function(req, res){
 
 io.on('connection', function (socket) {
 console.log('user connected');
-  
-  var loggedUser; // Utilisateur connecté a la socket
+
+  let loggedUser; // Utilisateur connecté a la socket
   let roomID;
   /**
    * Connexion d'un utilisateur via le formulaire :
@@ -32,7 +32,7 @@ console.log('user connected');
 
     console.log('user connected : ' + loggedUser.username);
     socket.emit('login', {userName: loggedUser.username});
-    var message = {message: loggedUser.username + " joined the room"}
+    let message = {message: loggedUser.username + " joined the room"}
     socket.to(roomID).broadcast.emit('chat-message', message);
     io.emit('room-list', roomArray)
   });
@@ -49,7 +49,7 @@ console.log('user connected');
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
     socket.emit('room-service', roomID);
-    
+
   });
   /**
    * Réception de l'événement 'joinRoom-service' et réémission vers tous les utilisateurs
@@ -63,14 +63,14 @@ console.log('user connected');
      socket.emit('room-service', roomID);
       console.log('room clear')
     clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
-    
-    if(clientsInRoom === 2){ 
+
+    if(clientsInRoom === 2){
       roomArray.splice(roomArray.indexOf(roomID),1)
         console.log('room complet')
       }
     }
   );
-  
+
 
   /**
    * Réception de l'événement 'romm-list' et réémission vers tous les utilisateurs
@@ -78,8 +78,8 @@ console.log('user connected');
   socket.on('leaveRoom', function(data){
     roomID = data.roomName;
     clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
-    
-    if(clientsInRoom >1){ 
+
+    if(clientsInRoom >1){
       if(roomArray.indexOf(roomID) === -1)  {
         roomArray.push(roomID)
         console.log('room un place')
@@ -94,7 +94,7 @@ console.log('user connected');
     io.emit('room-list', roomArray)
 
   })
-  
+
    /**
    * Réception de l'événement 'chat-message' et réémission vers tous les utilisateurs
    */
@@ -103,11 +103,11 @@ console.log('user connected');
     console.log('roomID', roomID);
     message.username = loggedUser.username + " says : ";
     io.to(roomID).emit('chat-message', message);
-   
+
   });
 
   /**
-   Le jeu de dames 
+   Le jeu de dames
    *****************************************
   */
 
@@ -116,15 +116,15 @@ console.log('user connected');
      io.emit('click', "coucou")
 
 
-  }) 
-  
+  })
+
   /**
    * Déconnexion d'un utilisateur : broadcast d'un 'service-message'
    */
   socket.on('disconnect', function () {
     if(loggedUser !== undefined){
       console.log('user disconnected : ' + loggedUser.username);
-      var serviceMessage = {
+      let serviceMessage = {
         text: 'User "' + loggedUser.username + '" disconnected',
         type: 'logout'
       };
