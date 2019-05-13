@@ -115,20 +115,20 @@ class App extends Component {
         {
           if (this.state.healthChun !== 20){
             this.setState((preState) => {return {scoreRed : preState.scoreRed + 1, healthChun : preState.healthChun -20, animationPlayerOne: "p1-won", animationPlayerTwo: "p2-lost"}});
-            return " Ryu strikes ! "
+            return this.props.playerOne + " strikes ! "
           }
           if (this.state.healthChun === 20){
             this.setState((preState) => {return {scoreRed : preState.scoreRed + 1, healthChun : preState.healthChun -20, nextMove: false, nextFight: false, nextRound: true, animationPlayerOne: "p1-wonRound", animationPlayerTwo: "p2-looseRound"}});
-            return " Ryu wins ! "
+            return this.props.playerOne + " wins ! "
           }
         }
     if (this.state.healthRyu !== 20){
       this.setState((preState) => {return {scoreBlue : preState.scoreBlue + 1, healthRyu : preState.healthRyu -20, animationPlayerTwo: "p2-won", animationPlayerOne: "p1-lost"}});
-      return " Chun-li strikes !"
+      return this.props.playerTwo + " strikes !"
     }
     if (this.state.healthRyu === 20){
       this.setState((preState) => {return {scoreBlue : preState.scoreBlue + 1, healthRyu : preState.healthRyu -20, nextMove: false, nextFight: false, nextRound: true, animationPlayerOne: "p1-looseRound", animationPlayerTwo: "p2-wonRound"}});
-      return " Chun-li wins !"
+      return this.props.playerTwo + " wins !"
     }
   }
 
