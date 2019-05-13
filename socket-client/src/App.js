@@ -16,7 +16,8 @@ class Chat extends Component{
     this.state = {
       endpoint: "localhost:8000",
       username: '',
-      opponent: '',
+      playerOne: '',
+      playerTwo: '',
       message:'', //sert à communiquer avec le serveur
       messages: [], //ensemble des messages reçus du serveur
       session: false, //boolean pour switch l'opérateur ternaire
@@ -72,7 +73,7 @@ class Chat extends Component{
     });
 
     socket.on('room-service',(data) => {
-      this.setState({room: data});
+      this.setState({room: data[0], playerOne: data[1], playerTwo: data[2]});
     });
 
     socket.on('room-list', (data) => {
@@ -87,7 +88,7 @@ class Chat extends Component{
     return (
 
       <>
-        <Game username={this.state.username} opponent={this.state.opponent}/>
+        <Game playerOne={this.state.playerOne} playerTwo={this.state.playerTwo}/>
         { this.state.session ?
           <div>
            {  !this.state.room_check ?
