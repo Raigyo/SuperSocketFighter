@@ -63,11 +63,11 @@ class App extends Component {
 
   playerChoice = (move) => {
         this.setState({
-          /*playerRed: this.symbols[move],
-          playerBlue: this.symbols[Math.floor(Math.random()*5)],*/
+          playerRed: this.symbols[move],
+          playerBlue: this.symbols[Math.floor(Math.random()*5)],
           nextFight: true,
         })
-        socket.emit('move-message', {playerRed: this.symbols[move]})
+        socket.emit('move-message', {player: this.symbols[move]})
   }
 
   componentDidMount(){
