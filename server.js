@@ -27,7 +27,8 @@ console.log('user connected');
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
    */
-  socket.on('user-login', function (user) {
+  socket.on('user-login', function (user) {    
+      console.log('incoming chat-message', message);
     loggedUser = user;
 
     console.log('user connected : ' + loggedUser.username);
@@ -99,10 +100,11 @@ console.log('user connected');
    * Réception de l'événement 'chat-message' et réémission vers tous les utilisateurs
    */
   socket.on('chat-message', function (message) {
-    console.log('chat-message', message);
+    console.log('incoming chat-message', message);
     console.log('roomID', roomID);
     message.username = loggedUser.username + " says : ";
     io.to(roomID).emit('chat-message', message);
+    console.log('outgoing chat-message', message);
 
   });
 
