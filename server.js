@@ -41,9 +41,11 @@ console.log('user connected');
    */
 
   socket.on('createRoom', function(data){
+    let playerOne = data.user;
+    console.log('p1 '+ playerOne);
     socket.leave(roomID);
     roomID = data.roomName;
-    console.log('[socket]','join room :',roomID);
+    console.log(loggedUser.username,'join room :',roomID);
     socket.join(roomID);
 
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};

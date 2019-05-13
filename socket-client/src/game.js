@@ -200,7 +200,7 @@ class App extends Component {
     <div id="conteneur-flexbox">
       <div className="title" id="title"><img src="img/socket-fighter.png" alt=""/></div>
       <div className="hud" id="player-1">
-        <div>RYU: {this.state.scoreRed}</div>
+        <div>{this.props.username}: {this.state.scoreRed}</div>
         <div><progress id="health-ryu" className="health" value={`${this.state.healthRyu}`} max="100"></progress></div>
           <PlayerSprite
           character="ryu"
@@ -226,7 +226,7 @@ class App extends Component {
         {buttonNextRound}
       </div>{/*\div app*/}
       <div className="hud" id="player-2">
-        <div>CHUN-LI: {this.state.scoreBlue}</div>
+        <div>{this.props.opponent}: {this.state.scoreBlue}</div>
         <div><progress id="health-chun" className="health" value={`${this.state.healthChun}`} max="100"></progress></div>
         <PlayerSprite
         character="chun-li"

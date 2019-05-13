@@ -16,6 +16,7 @@ class Chat extends Component{
     this.state = {
       endpoint: "localhost:8000",
       username: '',
+      opponent: '',
       message:'', //sert à communiquer avec le serveur
       messages: [], //ensemble des messages reçus du serveur
       session: false, //boolean pour switch l'opérateur ternaire
@@ -86,7 +87,7 @@ class Chat extends Component{
     return (
 
       <>
-        <Game />
+        <Game username={this.state.username} opponent={this.state.opponent}/>
         { this.state.session ?
           <div>
            {  !this.state.room_check ?
