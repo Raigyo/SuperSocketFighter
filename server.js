@@ -4,6 +4,8 @@ let http = require('http').Server(app);
 let io = require('socket.io')(http);
 let path = require ('path');
 let port = process.env.PORT || 8000; // connexion heroku
+let playerOne;
+let playerTwo;
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -42,14 +44,16 @@ console.log('user connected');
    */
 
   socket.on('createRoom', function(data){
+    playerOne = data.user;
+    console.log('p1 '+ playerOne);
     socket.leave(roomID);
     roomID = data.roomName;
-    console.log('[socket]','join room :',roomID);
+    console.log(loggedUser.username,'join room :',roomID);
     socket.join(roomID);
 
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
-    socket.emit('room-service', roomID);
+    socket.emit('room-service', [roomID, playerOne, playerTwo]);
 
   });
   /**
@@ -57,11 +61,13 @@ console.log('user connected');
    */
   socket.on('joinRoom', function(data){
       console.log('joinRoom', data)
+    playerTwo = data.user;
+    console.log('p2 '+ playerTwo);
     socket.leave(roomID);
     roomID = data.roomName;
       console.log(roomID)
     socket.join(roomID)
-     socket.emit('room-service', roomID);
+     io.emit('room-service', [roomID, playerOne, playerTwo]);
       console.log('room clear')
     clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
 

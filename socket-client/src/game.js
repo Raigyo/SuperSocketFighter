@@ -115,20 +115,20 @@ class App extends Component {
         {
           if (this.state.healthChun !== 20){
             this.setState((preState) => {return {scoreRed : preState.scoreRed + 1, healthChun : preState.healthChun -20, animationPlayerOne: "p1-won", animationPlayerTwo: "p2-lost"}});
-            return " Ryu strikes ! "
+            return this.props.playerOne + " strikes ! "
           }
           if (this.state.healthChun === 20){
             this.setState((preState) => {return {scoreRed : preState.scoreRed + 1, healthChun : preState.healthChun -20, nextMove: false, nextFight: false, nextRound: true, animationPlayerOne: "p1-wonRound", animationPlayerTwo: "p2-looseRound"}});
-            return " Ryu wins ! "
+            return this.props.playerOne + " wins ! "
           }
         }
     if (this.state.healthRyu !== 20){
       this.setState((preState) => {return {scoreBlue : preState.scoreBlue + 1, healthRyu : preState.healthRyu -20, animationPlayerTwo: "p2-won", animationPlayerOne: "p1-lost"}});
-      return " Chun-li strikes !"
+      return this.props.playerTwo + " strikes !"
     }
     if (this.state.healthRyu === 20){
       this.setState((preState) => {return {scoreBlue : preState.scoreBlue + 1, healthRyu : preState.healthRyu -20, nextMove: false, nextFight: false, nextRound: true, animationPlayerOne: "p1-looseRound", animationPlayerTwo: "p2-wonRound"}});
-      return " Chun-li wins !"
+      return this.props.playerTwo + " wins !"
     }
   }
 
@@ -200,7 +200,7 @@ class App extends Component {
     <div id="conteneur-flexbox">
       <div className="title" id="title"><img src="img/socket-fighter.png" alt=""/></div>
       <div className="hud" id="player-1">
-        <div>RYU: {this.state.scoreRed}</div>
+        <div>{this.props.playerOne}: {this.state.scoreRed}</div>
         <div><progress id="health-ryu" className="health" value={`${this.state.healthRyu}`} max="100"></progress></div>
           <PlayerSprite
           character="ryu"
@@ -226,7 +226,7 @@ class App extends Component {
         {buttonNextRound}
       </div>{/*\div app*/}
       <div className="hud" id="player-2">
-        <div>CHUN-LI: {this.state.scoreBlue}</div>
+        <div>{this.props.playerTwo}: {this.state.scoreBlue}</div>
         <div><progress id="health-chun" className="health" value={`${this.state.healthChun}`} max="100"></progress></div>
         <PlayerSprite
         character="chun-li"
