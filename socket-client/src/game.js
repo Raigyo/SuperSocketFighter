@@ -59,33 +59,33 @@ class App extends Component {
     socket = io(this.state.endpoint);
   }
 
-  /* function to make a move*/
-
-  playerChoice = (move) => {
-        this.setState({
-          playerRed: this.symbols[move],
-          playerBlue: this.symbols[Math.floor(Math.random()*5)],
-          nextFight: true,
-        })
-        socket.emit('move-message', {player: this.symbols[move]})
-  }
-
   componentDidMount(){
   // reception des messages
     socket.on('move-message', (data) =>{
       this.setState({moves: data});
     });
-    /*socket.on('room-service', (data) =>{
-      this.setState({playerNumberOne: data[3]});
-      console.log("player number one: " + this.state.playerNumberOne);
-    });*/
-
   }
 
   componentDidUpdate(){
-    console.log("Game.js player number : " + this.props.playerNumberOne);
+    //console.log("Game.js player number : " + this.props.playerNumberOne);
   }
 
+  /* function to make a move*/
+
+  playerChoice = (move) => {
+        this.setState({
+          //playerRed: this.symbols[move],
+          //playerBlue: this.symbols[Math.floor(Math.random()*5)],
+          nextFight: true,
+        })
+        if (this.props.playerNumberOne === true){
+          socket.emit('move-playerone', {playerOneMove: move})
+        }
+        else {
+          socket.emit('move-playertwo', {playerTwoMove: move})
+        }
+
+  }
 
 /* function to launch the next round */
 
