@@ -40,6 +40,8 @@ class App extends Component {
       endpoint: "localhost:8000",
       playerRedDisplay: this.symbols[0],
       playerBlueDisplay: this.symbols[0],
+      playerRed: '',
+      playerBlue: '',
       round: 1,
       scoreRed: 0,
       scoreBlue: 0,
@@ -60,7 +62,7 @@ class App extends Component {
 
   componentDidMount(){
   // reception des messages
-  /*  socket.on('moves', (data) =>{
+  socket.on('moves', (data) =>{
       this.setState({
         playerRed: this.symbols[data.movePlayerOne],
         playerBlue: this.symbols[data.movePlayerTwo],
@@ -68,7 +70,7 @@ class App extends Component {
         playerTwoHasPlayed: data.playerTwoHasPlayed,
         nextFight: true,
       })
-    });*/
+    });
     //this.decideWinner();
   }
 
@@ -95,8 +97,6 @@ class App extends Component {
         else {
           socket.emit('move-playertwo', {playerTwoMove: move})
         }
-        this.setState({nextFight: true});
-
   }
 
 /* function to launch the next round */
@@ -122,7 +122,9 @@ class App extends Component {
 
   /* function to decide winner + if the round is finished */
   decideWinner = () => {
-    const {playerBlue, playerRed} = this.state
+    const {playerBlue, playerRed} = this.state;
+    console.log("playerRed:" + this.state.playerRed);
+    console.log("playerBlue:" + this.state.playerBlue);
     this.setState({
       playerRedDisplay: this.state.playerRed,
       playerBlueDisplay: this.state.playerBlue,
