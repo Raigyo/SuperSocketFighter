@@ -18,6 +18,7 @@ class Chat extends Component{
       username: '',
       playerOne: '',
       playerTwo: '',
+      playerNumberOne: false,
       message:'', //sert à communiquer avec le serveur
       messages: [], //ensemble des messages reçus du serveur
       session: false, //boolean pour switch l'opérateur ternaire
@@ -74,6 +75,11 @@ class Chat extends Component{
 
     socket.on('room-service',(data) => {
       this.setState({room: data[0], playerOne: data[1], playerTwo: data[2]});
+    });
+
+    socket.on('player-number',(data) => {
+      this.setState({playerNumberOne: data});
+      console.log("player number one: " + this.state.playerNumberOne);
     });
 
     socket.on('room-list', (data) => {

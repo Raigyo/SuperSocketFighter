@@ -6,6 +6,7 @@ let path = require ('path');
 let port = process.env.PORT || 8000; // connexion heroku
 let playerOne;
 let playerTwo;
+let playerNumber;
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -31,7 +32,6 @@ console.log('user connected');
    */
   socket.on('user-login', function (user) {
     loggedUser = user;
-
     console.log('user connected : ' + loggedUser.username);
     socket.emit('login', {userName: loggedUser.username});
     let message = {message: loggedUser.username + " joined the room"}
@@ -44,16 +44,16 @@ console.log('user connected');
 
   socket.on('createRoom', function(data){
     playerOne = data.user;
+    playerNumberOne = true;
     console.log('p1 '+ playerOne);
     socket.leave(roomID);
     roomID = data.roomName;
     console.log(loggedUser.username,'join room :',roomID);
     socket.join(roomID);
-
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
     socket.emit('room-service', [roomID, playerOne, playerTwo]);
-
+    socket.emit('player-number', playerNumberOne);
   });
   /**
    * Réception de l'événement 'joinRoom-service' et réémission vers tous les utilisateurs

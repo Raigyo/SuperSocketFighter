@@ -54,7 +54,7 @@ class App extends Component {
       animationPlayerOne: "p1-idle",
       animationPlayerTwo: "p2-idle",
       healthRyu: 100,
-      healthChun: 100,
+      healthChun: 100,      
     }
     socket = io(this.state.endpoint);
   }
@@ -75,6 +75,10 @@ class App extends Component {
     socket.on('move-message', (data) =>{
       this.setState({moves: data});
     });
+    /*socket.on('room-service', (data) =>{
+      this.setState({playerNumberOne: data[3]});
+      console.log("player number one: " + this.state.playerNumberOne);
+    });*/
   }
 
 /* function to launch the next round */
