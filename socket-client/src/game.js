@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import io from "socket.io-client";
 
-let socket;
-
 /* const with that displays the move of the player */
 const PlayerCard =({color, symbol})=> {
   const style ={
@@ -55,12 +53,12 @@ class App extends Component {
       playerOneHasPlayed: false,
       playerTwoHasPlayed: false,
     }
-    socket = io(this.state.endpoint);
+    this.socket = props.socket
   }
 
   componentDidMount(){
   // reception des messages
-  /*  socket.on('moves', (data) =>{
+  /*  this.socket.on('moves', (data) =>{
       this.setState({
         playerRed: this.symbols[data.movePlayerOne],
         playerBlue: this.symbols[data.movePlayerTwo],
@@ -73,7 +71,7 @@ class App extends Component {
   }
 
   componentDidUpdate(){
-    /*socket.on('moves', (data) =>{
+    /*this.socket.on('moves', (data) =>{
       this.setState({
         playerRed: this.symbols[data.movePlayerOne],
         playerBlue: this.symbols[data.movePlayerTwo],
@@ -90,10 +88,12 @@ class App extends Component {
   /* function to make a move*/
   playerChoice = (move) => {
         if (this.props.playerNumberOne === true){
-          socket.emit('move-playerone', {playerOneMove: move})
+          console.log("move playerOne");
+          this.socket.emit('move-playerone', {playerOneMove: move})
         }
         else {
-          socket.emit('move-playertwo', {playerTwoMove: move})
+          console.log("move playerTwo");
+          this.socket.emit('move-playertwo', {playerTwoMove: move})
         }
         this.setState({nextFight: true});
 
@@ -122,6 +122,7 @@ class App extends Component {
 
   /* function to decide winner + if the round is finished */
   decideWinner = () => {
+    console.log("decideWinner");
     const {playerBlue, playerRed} = this.state
     this.setState({
       playerRedDisplay: this.state.playerRed,

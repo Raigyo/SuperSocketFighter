@@ -4,13 +4,7 @@ let http = require('http').Server(app);
 let io = require('socket.io')(http);
 let path = require ('path');
 let port = process.env.PORT || 8000; // connexion heroku
-let playerOne;
-let playerTwo;
-let playerNumber;
-let playerOneHasPlayed = false;
-let playerTwoHasPlayed = false;
-let movePlayerOne = '';
-let movePlayerTwo = '';
+
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -30,12 +24,19 @@ console.log('user connected');
 
   let loggedUser; // Utilisateur connecté a la socket
   let roomID;
+  let playerNumber;
+  let playerOne;
+  let playerTwo;
+  let playerOneHasPlayed = false;
+  let playerTwoHasPlayed = false;
+  let movePlayerOne = '';
+  let movePlayerTwo = '';
   /**
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
    */
-  socket.on('user-login', function (user) {    
-      console.log('incoming chat-message', message);
+  socket.on('user-login', function (user) {
+      // console.log('incoming chat-message', message);
     loggedUser = user;
     console.log('user connected : ' + loggedUser.username);
     socket.emit('login', {userName: loggedUser.username});
@@ -49,16 +50,28 @@ console.log('user connected');
 
   socket.on('createRoom', function(data){
     playerOne = data.user;
-    playerNumberOne = true;
     console.log('p1 '+ playerOne);
     socket.leave(roomID);
     roomID = data.roomName;
-    console.log(loggedUser.username,'join room :',roomID);
+    // console.log(loggedUser.username,'join room :',roomID);
     socket.join(roomID);
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
+    playerNumberOne = true;
     socket.emit('room-service', [roomID, playerOne, playerTwo]);
     socket.emit('player-number', playerNumberOne);
+
+    /* check moves player 1 */
+      socket.on('move-playerone', function (message) {
+        console.log('move-playerone', message);
+        playerOneHasPlayed = true;
+        movePlayerOne = message;
+        if (playerTwoHasPlayed === true){
+          io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+          playerOneHasPlayed = false;
+          playerTwoHasPlayed = false;
+        }
+      });
   });
   /**
    * Réception de l'événement 'joinRoom-service' et réémission vers tous les utilisateurs
@@ -79,6 +92,17 @@ console.log('user connected');
       roomArray.splice(roomArray.indexOf(roomID),1)
         console.log('room complet')
       }
+    /* check moves player 2 */
+      socket.on('move-playertwo', function (message) {
+        console.log('move-playertwo', message);
+        playerTwoHasPlayed = true;
+        movePlayerTwo = message;
+        if (playerOneHasPlayed === true){
+          io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+          playerOneHasPlayed = false;
+          playerTwoHasPlayed = false;
+        }
+      });
     }
   );
 
@@ -118,45 +142,6 @@ console.log('user connected');
 
   });
 
-/* check moves player 1 */
-  socket.on('move-playerone', function (message) {
-    //console.log(loggedUser);
-    console.log('move-playerone', message);
-    playerOneHasPlayed = true;
-    movePlayerOne = message;
-    /*console.log('roomID', roomID);
-    message.username = loggedUser.username + " says : ";
-    io.to(roomID).emit('chat-message', message);*/
-    if (playerTwoHasPlayed === true){
-      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
-      playerOneHasPlayed = false;
-      playerTwoHasPlayed = false;
-    }
-  });
-/* check moves player 2 */
-  socket.on('move-playertwo', function (message) {
-    console.log('move-playertwo', message);
-    playerTwoHasPlayed = true;
-    movePlayerTwo = message;
-    if (playerOneHasPlayed === true){
-      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
-      playerOneHasPlayed = false;
-      playerTwoHasPlayed = false;
-    }
-  });
-
-  /**
-   Le jeu de dames
-   *****************************************
-  */
-
-  socket.on('handleClick', function(data){
-    console.log('handleClick', data);
-     io.emit('click', "coucou")
-
-
-  })
-
   /**
    * Déconnexion d'un utilisateur : broadcast d'un 'service-message'
    */
@@ -177,5 +162,5 @@ console.log('user connected');
  * Lancement du serveur en écoutant les connexions arrivant sur le port 3000
  */
 http.listen(port, function(){
-  console.log('listening on ${ port }');
+  console.log(`listening on ${ port }`);
 });

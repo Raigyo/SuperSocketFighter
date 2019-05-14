@@ -75,11 +75,11 @@ class Chat extends Component{
 
     socket.on('room-service',(data) => {
       this.setState({room: data[0], playerOne: data[1], playerTwo: data[2]});
+      console.log("room-service delivered")
     });
 
-    socket.on('player-number',(data) => {
-      this.setState({playerNumberOne: data});
-      console.log("player number one: " + this.state.playerNumberOne);
+    socket.on('player-number', (data) => {
+      this.setState({playerNumberOne: true})
     });
 
     socket.on('room-list', (data) => {
@@ -90,14 +90,15 @@ class Chat extends Component{
   }
   render(){
     // console.log(this.state);
+    console.log(this.state)
     return (
 
       <>
-        <Game
+      <Game
           playerOne={this.state.playerOne}
           playerTwo={this.state.playerTwo}
           playerNumberOne={this.state.playerNumberOne}
-        />
+          socket={socket}/>
         { this.state.session ?
           <div>
            {  !this.state.room_check ?
