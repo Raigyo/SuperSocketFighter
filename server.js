@@ -7,6 +7,10 @@ let port = process.env.PORT || 8000; // connexion heroku
 let playerOne;
 let playerTwo;
 let playerNumber;
+let playerOneHasPlayed = false;
+let playerTwoHasPlayed = false;
+let movePlayerOne = '';
+let movePlayerTwo = '';
 
 /**
  * Gestion des requêtes HTTP des utilisateurs en leur renvoyant les fichiers du dossier 'public'
@@ -118,14 +122,27 @@ console.log('user connected');
   socket.on('move-playerone', function (message) {
     //console.log(loggedUser);
     console.log('move-playerone', message);
+    playerOneHasPlayed = true;
+    movePlayerOne = message;
     /*console.log('roomID', roomID);
     message.username = loggedUser.username + " says : ";
     io.to(roomID).emit('chat-message', message);*/
-
+    if (playerTwoHasPlayed === true){
+      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+      playerOneHasPlayed = false;
+      playerTwoHasPlayed = false;
+    }
   });
-
+/* check moves player 2 */
   socket.on('move-playertwo', function (message) {
     console.log('move-playertwo', message);
+    playerTwoHasPlayed = true;
+    movePlayerTwo = message;
+    if (playerOneHasPlayed === true){
+      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+      playerOneHasPlayed = false;
+      playerTwoHasPlayed = false;
+    }
   });
 
   /**

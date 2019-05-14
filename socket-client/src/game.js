@@ -5,7 +5,6 @@ import io from "socket.io-client";
 let socket;
 
 /* const with that displays the move of the player */
-
 const PlayerCard =({color, symbol})=> {
   const style ={
     backgroundColor: color,
@@ -19,7 +18,6 @@ const PlayerCard =({color, symbol})=> {
 }
 
 /* const that displays the characters animations */
-
 const PlayerSprite =({character, animation})=> {
   const style ={
     //backgroundColor: color,
@@ -33,7 +31,6 @@ const PlayerSprite =({character, animation})=> {
 }
 
 /* constructor with all the states of the game */
-
 class App extends Component {
   constructor(props){
     super(props)
@@ -55,40 +52,52 @@ class App extends Component {
       animationPlayerTwo: "p2-idle",
       healthRyu: 100,
       healthChun: 100,
+      playerOneHasPlayed: false,
+      playerTwoHasPlayed: false,
     }
     socket = io(this.state.endpoint);
   }
 
   componentDidMount(){
   // reception des messages
-    socket.on('move-message', (data) =>{
-      this.setState({moves: data});
-    });
+  /*  socket.on('moves', (data) =>{
+      this.setState({
+        playerRed: this.symbols[data.movePlayerOne],
+        playerBlue: this.symbols[data.movePlayerTwo],
+        playerOneHasPlayed: data.playerOneHasPlayed,
+        playerTwoHasPlayed: data.playerTwoHasPlayed,
+        nextFight: true,
+      })
+    });*/
+    //this.decideWinner();
   }
 
   componentDidUpdate(){
-    //console.log("Game.js player number : " + this.props.playerNumberOne);
+    socket.on('moves', (data) =>{
+      this.setState({
+        playerRed: this.symbols[data.movePlayerOne],
+        playerBlue: this.symbols[data.movePlayerTwo],
+        playerOneHasPlayed: data.playerOneHasPlayed,
+        playerTwoHasPlayed: data.playerTwoHasPlayed,
+        nextFight: true,
+      })
+      if (this.state.playerOneHasPlayed === true && this.state.playerTwoHasPlayed === true){
+        this.runGame();
+      }
+    });
   }
 
   /* function to make a move*/
-
   playerChoice = (move) => {
-        this.setState({
-          //playerRed: this.symbols[move],
-          //playerBlue: this.symbols[Math.floor(Math.random()*5)],
-          nextFight: true,
-        })
         if (this.props.playerNumberOne === true){
           socket.emit('move-playerone', {playerOneMove: move})
         }
         else {
           socket.emit('move-playertwo', {playerTwoMove: move})
         }
-
   }
 
 /* function to launch the next round */
-
   runNextRound = () => {
         this.setState((preState) => {return {round : preState.round + 1}});
         this.setState({
@@ -104,11 +113,12 @@ class App extends Component {
           animationPlayerTwo: "p2-idle",
           healthRyu: 100,
           healthChun: 100,
+          //playerOneHasPlayed: false,
+          //playerTwoHasPlayed: false,
         })
   }
 
   /* function to decide winner + if the round is finished */
-
   decideWinner = () => {
     const {playerBlue, playerRed} = this.state
     this.setState({
@@ -156,24 +166,13 @@ class App extends Component {
   }
 
   /* function to launch a game */
-
   runGame = () => {
-    let counter =0
     this.setState({nextFight: false, buttonsChoice: false})
-    let myInterval = setInterval(() => {
-      counter++
-
-      if(counter > 10){
-        clearInterval(myInterval)
-        this.setState({winner: this.decideWinner()})
-      }
-    },100)
+    this.setState({winner: this.decideWinner()})
   }
 
   /* function that reset some states after a move */
-
   nextMove = () => {
-    //this.setState((preState) => {return {round : preState.round + 1}});
     this.setState({
       playerRedDisplay: this.symbols[0],
       playerBlueDisplay: this.symbols[0],
@@ -187,8 +186,6 @@ class App extends Component {
     })
   }
 
-
-
   render(){
     const nextMove = this.state.nextMove;
     const nextFight = this.state.nextFight;
@@ -198,11 +195,19 @@ class App extends Component {
     let buttonsChoiceDisplay;
     let buttonNextRound;
     if (nextMove) {
-      buttonNextDisplay = <div className="hud"><button onClick={this.nextMove}>NEXT MOVE</button></div>
+      //buttonNextDisplay = <div className="hud"><button onClick={this.nextMove}>NEXT MOVE</button></div>
+      let counter =0;
+      let myInterval = setInterval(() => {
+        counter++;
+        if(counter > 10){
+          clearInterval(myInterval)
+          this.nextMove();
+        }
+      },500)
     }
-    if (nextFight) {
+    /*if (nextFight) {
       buttonNextDisplay =  <div className="hud"><button onClick={this.runGame}>FIGHT!</button></div>
-    }
+    }*/
     if (buttonsChoice) {
       buttonsChoiceDisplay =
       <div className="buttonsGroup" id="buttonsGroup">
