@@ -60,7 +60,8 @@ class App extends Component {
 
   componentDidMount(){
   // reception des messages
-  /*  this.socket.on('moves', (data) =>{
+    this.socket.on('moves', (data) =>{
+      console.log("receive moves :", data);
       this.setState({
         playerRed: this.symbols[data.movePlayerOne],
         playerBlue: this.symbols[data.movePlayerTwo],

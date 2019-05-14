@@ -11,7 +11,12 @@ let port = process.env.PORT || 8000; // connexion heroku
  */
 let roomArray=[]
 let usersList = [];
-
+let playerOne;
+let playerTwo;
+let playerOneHasPlayed = false;
+let playerTwoHasPlayed = false;
+let movePlayerOne = '';
+let movePlayerTwo = '';
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -25,12 +30,9 @@ console.log('user connected');
   let loggedUser; // Utilisateur connecté a la socket
   let roomID;
   let playerNumber;
-  let playerOne;
-  let playerTwo;
-  let playerOneHasPlayed = false;
-  let playerTwoHasPlayed = false;
-  let movePlayerOne = '';
-  let movePlayerTwo = '';
+
+
+
   /**
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
@@ -67,6 +69,7 @@ console.log('user connected');
         playerOneHasPlayed = true;
         movePlayerOne = message;
         if (playerTwoHasPlayed === true){
+          console.log("both player chose");
           io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
           playerOneHasPlayed = false;
           playerTwoHasPlayed = false;
@@ -98,6 +101,7 @@ console.log('user connected');
         playerTwoHasPlayed = true;
         movePlayerTwo = message;
         if (playerOneHasPlayed === true){
+          console.log("both player chose");
           io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
           playerOneHasPlayed = false;
           playerTwoHasPlayed = false;
