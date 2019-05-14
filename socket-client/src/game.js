@@ -61,8 +61,12 @@ class App extends Component {
 
   componentDidMount(){
   // reception des messages
-    socket.on('move-message', (data) =>{
-      this.setState({moves: data});
+    socket.on('moves', (data) =>{
+      this.setState({
+        playerRed: this.symbols[data.movePlayerOne],
+        playerBlue: this.symbols[data.movePlayerTwo],
+        nextFight: true,
+      })
     });
   }
 
@@ -73,11 +77,6 @@ class App extends Component {
   /* function to make a move*/
 
   playerChoice = (move) => {
-        this.setState({
-          //playerRed: this.symbols[move],
-          //playerBlue: this.symbols[Math.floor(Math.random()*5)],
-          nextFight: true,
-        })
         if (this.props.playerNumberOne === true){
           socket.emit('move-playerone', {playerOneMove: move})
         }
