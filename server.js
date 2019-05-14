@@ -69,8 +69,8 @@ console.log('user connected');
         playerOneHasPlayed = true;
         movePlayerOne = message;
         if (playerTwoHasPlayed === true){
-          console.log("both player chose");
-          io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+          console.log("both player chose", movePlayerOne, movePlayerTwo);
+          io.emit('moves', {movePlayerOne, movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
           playerOneHasPlayed = false;
           playerTwoHasPlayed = false;
         }
@@ -101,8 +101,8 @@ console.log('user connected');
         playerTwoHasPlayed = true;
         movePlayerTwo = message;
         if (playerOneHasPlayed === true){
-          console.log("both player chose");
-          io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+          console.log("both player chose", movePlayerOne, movePlayerTwo);
+          io.emit('moves', {movePlayerOne, movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
           playerOneHasPlayed = false;
           playerTwoHasPlayed = false;
         }

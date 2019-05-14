@@ -63,8 +63,8 @@ class App extends Component {
     this.socket.on('moves', (data) =>{
       console.log("receive moves :", data);
       this.setState({
-        playerRed: this.symbols[data.movePlayerOne],
-        playerBlue: this.symbols[data.movePlayerTwo],
+        playerRed: this.symbols[data.playerOneMove],
+        playerBlue: this.symbols[data.playerTwoMove],
         playerOneHasPlayed: data.playerOneHasPlayed,
         playerTwoHasPlayed: data.playerTwoHasPlayed,
         nextFight: true,
