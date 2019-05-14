@@ -73,7 +73,7 @@ class App extends Component {
   }
 
   componentDidUpdate(){
-    socket.on('moves', (data) =>{
+    /*socket.on('moves', (data) =>{
       this.setState({
         playerRed: this.symbols[data.movePlayerOne],
         playerBlue: this.symbols[data.movePlayerTwo],
@@ -84,7 +84,7 @@ class App extends Component {
       if (this.state.playerOneHasPlayed === true && this.state.playerTwoHasPlayed === true){
         this.runGame();
       }
-    });
+    });*/
   }
 
   /* function to make a move*/
@@ -95,6 +95,8 @@ class App extends Component {
         else {
           socket.emit('move-playertwo', {playerTwoMove: move})
         }
+        this.setState({nextFight: true});
+
   }
 
 /* function to launch the next round */
@@ -195,19 +197,19 @@ class App extends Component {
     let buttonsChoiceDisplay;
     let buttonNextRound;
     if (nextMove) {
-      //buttonNextDisplay = <div className="hud"><button onClick={this.nextMove}>NEXT MOVE</button></div>
-      let counter =0;
+      buttonNextDisplay = <div className="hud"><button onClick={this.nextMove}>NEXT MOVE</button></div>
+      /*let counter =0;
       let myInterval = setInterval(() => {
         counter++;
         if(counter > 10){
           clearInterval(myInterval)
           this.nextMove();
         }
-      },500)
+      },500)*/
     }
-    /*if (nextFight) {
+    if (nextFight) {
       buttonNextDisplay =  <div className="hud"><button onClick={this.runGame}>FIGHT!</button></div>
-    }*/
+    }
     if (buttonsChoice) {
       buttonsChoiceDisplay =
       <div className="buttonsGroup" id="buttonsGroup">
