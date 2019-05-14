@@ -126,7 +126,7 @@ console.log('user connected');
     message.username = loggedUser.username + " says : ";
     io.to(roomID).emit('chat-message', message);*/
     if (playerTwoHasPlayed === true){
-      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo});
+      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
       playerOneHasPlayed = false;
       playerTwoHasPlayed = false;
     }
@@ -137,13 +137,11 @@ console.log('user connected');
     playerTwoHasPlayed = true;
     movePlayerTwo = message;
     if (playerOneHasPlayed === true){
-      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo});
+      io.emit('moves', {movePlayerOne: movePlayerOne, movePlayerTwo: movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
       playerOneHasPlayed = false;
       playerTwoHasPlayed = false;
     }
   });
-
-
 
   /**
    Le jeu de dames
