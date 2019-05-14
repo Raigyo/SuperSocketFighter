@@ -113,8 +113,8 @@ class App extends Component {
           animationPlayerTwo: "p2-idle",
           healthRyu: 100,
           healthChun: 100,
-          playerOneHasPlayed: false,
-          playerTwoHasPlayed: false,
+          //playerOneHasPlayed: false,
+          //playerTwoHasPlayed: false,
         })
   }
 
