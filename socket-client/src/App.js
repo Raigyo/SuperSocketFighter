@@ -94,7 +94,11 @@ class Chat extends Component{
     return (
 
       <>
-        <Game playerOne={this.state.playerOne} playerTwo={this.state.playerTwo}/>
+        <Game
+          playerOne={this.state.playerOne}
+          playerTwo={this.state.playerTwo}
+          playerNumberOne={this.state.playerNumberOne}
+        />
         { this.state.session ?
           <div>
            {  !this.state.room_check ?
