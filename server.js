@@ -60,8 +60,8 @@ console.log('user connected');
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
     playerNumberOne = true;
-    socket.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
-    socket.to(roomID).emit('player-number', playerNumberOne);
+    io.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
+    socket.emit('player-number', true);
 
     /* check moves player 1 */
       socket.on('move-playerone', function (message) {
