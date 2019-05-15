@@ -66,8 +66,8 @@ class App extends Component {
     console.log('moves received: ', data);
     //first two states don't work!!!!
       this.setState({
-        playerRed: this.symbols[data.movePlayerOne],
-        playerBlue: this.symbols[data.movePlayerTwo],
+        playerRed: this.symbols[data.movePlayerOne.playerOneMove],
+        playerBlue: this.symbols[data.movePlayerTwo.playerTwoMove],
         playerOneHasPlayed: data.playerOneHasPlayed,
         playerTwoHasPlayed: data.playerTwoHasPlayed,
         nextFight: true,
