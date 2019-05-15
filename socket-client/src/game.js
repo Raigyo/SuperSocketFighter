@@ -60,7 +60,7 @@ class App extends Component {
 
   componentDidMount(){
   // reception des messages
-  socket.on('moves', (data) =>{
+  this.socket.on('moves', (data) =>{
     console.log('moves received: ', data);
     //first two states don't work!!!!
       this.setState({
