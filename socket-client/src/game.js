@@ -202,7 +202,7 @@ class App extends Component {
     let buttonsChoiceDisplay;
     let buttonNextRound;
     if (nextMove) {
-      buttonNextDisplay = <div className="hud"><button onClick={this.nextMove}>NEXT MOVE</button></div>
+      buttonNextDisplay = <div className="hud"><button className="myButton" onClick={this.nextMove}>NEXT MOVE</button></div>
       /*let counter =0;
       let myInterval = setInterval(() => {
         counter++;
@@ -213,7 +213,7 @@ class App extends Component {
       },500)*/
     }
     if (nextFight) {
-      buttonNextDisplay =  <div className="hud"><button onClick={this.runGame}>FIGHT!</button></div>
+      buttonNextDisplay =  <div className="hud"><button className="myButton" onClick={this.runGame}>FIGHT!</button></div>
     }
     if (buttonsChoice) {
       buttonsChoiceDisplay =
@@ -229,7 +229,7 @@ class App extends Component {
     if (nextRound) {
       buttonNextRound =
         <div className="hud">
-          <button onClick={this.runNextRound}>PLAY NEXT ROUND</button>
+          <button className="myButton" onClick={this.runNextRound}>PLAY NEXT ROUND</button>
         </div>
       }
     return (

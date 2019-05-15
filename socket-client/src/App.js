@@ -136,7 +136,7 @@ class Chat extends Component{
                   autoComplete="off"
                   value={this.state.message}
                   onChange={ev => this.setState({message: ev.target.value})}/>
-                <button onClick={this.sendMessage}>Send</button>
+                <button className="myButton" onClick={this.sendMessage}>Send</button>
               </form>
               <section className="chat">
                 {this.state.messages.map(msg => {
@@ -157,7 +157,7 @@ class Chat extends Component{
                 onChange={ev => this.setState({username: ev.target.value})}
                 autoComplete="off"
                 autoFocus />
-              <button onClick={this.login}>Login</button>
+              <button className="myButton" onClick={this.login}>Login</button>
             </form>
           </section>
         }</div>
