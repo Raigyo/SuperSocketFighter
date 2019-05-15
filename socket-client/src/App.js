@@ -67,10 +67,12 @@ class Chat extends Component{
   // reception des messages
     socket.on('chat-message', (data) =>{
       this.setState({messages: [...this.state.messages, data]});
+      console.log("chat-message");
     });
 
     socket.on('login',(data) => {
       this.setState({username: data.userName});
+      console.log("login");
     });
 
     socket.on('room-service',(data) => {
@@ -79,7 +81,8 @@ class Chat extends Component{
     });
 
     socket.on('player-number', (data) => {
-      this.setState({playerNumberOne: true})
+      this.setState({playerNumberOne: true});
+      console.log("player-number");
     });
 
     socket.on('room-list', (data) => {
