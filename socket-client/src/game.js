@@ -60,15 +60,17 @@ class App extends Component {
 
   componentDidMount(){
   // reception des messages
-    this.socket.on('moves', (data) =>{
-      console.log("receive moves :", data);
+  socket.on('moves', (data) =>{
+    console.log('moves received: ', data);
+    //first two states don't work!!!!
       this.setState({
-        playerRed: this.symbols[data.playerOneMove],
-        playerBlue: this.symbols[data.playerTwoMove],
+        playerRed: this.symbols[data.movePlayerOne.playerOneMove],
+        playerBlue: this.symbols[data.movePlayerTwo.playerTwoMove],
         playerOneHasPlayed: data.playerOneHasPlayed,
         playerTwoHasPlayed: data.playerTwoHasPlayed,
         nextFight: true,
       })
+      console.log(this.state.playerRed);
     });
     //this.decideWinner();
   }
