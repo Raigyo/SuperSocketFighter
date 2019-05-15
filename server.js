@@ -60,8 +60,8 @@ console.log('user connected');
     if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
     console.log('array check', roomArray)
     playerNumberOne = true;
-    socket.emit('room-service', [roomID, playerOne, playerTwo]);
-    socket.emit('player-number', playerNumberOne);
+    socket.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
+    socket.to(roomID).emit('player-number', playerNumberOne);
 
     /* check moves player 1 */
       socket.on('move-playerone', function (message) {
@@ -70,7 +70,7 @@ console.log('user connected');
         movePlayerOne = message;
         if (playerTwoHasPlayed === true){
           console.log("both player chose", movePlayerOne, movePlayerTwo);
-          io.emit('moves', {movePlayerOne, movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+          io.to(roomID).emit('moves', {movePlayerOne, movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
           playerOneHasPlayed = false;
           playerTwoHasPlayed = false;
         }
@@ -87,7 +87,7 @@ console.log('user connected');
     roomID = data.roomName;
       console.log(roomID)
     socket.join(roomID)
-     io.emit('room-service', [roomID, playerOne, playerTwo]);
+     io.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
       console.log('room clear')
     clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
 
@@ -102,7 +102,7 @@ console.log('user connected');
         movePlayerTwo = message;
         if (playerOneHasPlayed === true){
           console.log("both player chose", movePlayerOne, movePlayerTwo);
-          io.emit('moves', {movePlayerOne, movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
+          io.to(roomID).emit('moves', {movePlayerOne, movePlayerTwo, playerOneHasPlayed: true, playerTwoHasPlayed: true});
           playerOneHasPlayed = false;
           playerTwoHasPlayed = false;
         }
