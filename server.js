@@ -20,9 +20,9 @@ let movePlayerTwo = '';
 
 app.use(express.static(path.join(__dirname, '/socket-client/build')));
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/socket-client/public/index.html');
-});
+// app.get('/', function(req, res){
+//   res.sendFile(__dirname + '/socket-client/public/index.html');
+// });
 
 io.on('connection', function (socket) {
 console.log('user connected');
