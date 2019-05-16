@@ -14,7 +14,8 @@ class Chat extends Component{
     this.joinRoom = this.joinRoom.bind(this);
 
     this.state = {
-      endpoint: "localhost:8000",
+      /*endpoint: "localhost:8000",*/  //Local
+      endpoint: undefined, //Heroku
       username: '',
       playerOne: '',
       playerTwo: '',
