@@ -42,7 +42,7 @@ console.log('user connected');
     socket.emit('login', {userName: loggedUser.username});
     let message = {message: loggedUser.username + " joined the room"}
     socket.to(roomID).broadcast.emit('chat-message', message);
-    io.emit('room-list', roomArray)
+    io.emit('room-list', roomArray.map(r => r.id))
   });
    /**
    * Réception de l'événement 'room-service' et réémission vers tous les utilisateurs
@@ -53,14 +53,20 @@ console.log('user connected');
     console.log('p1 '+ playerOne);
     socket.leave(roomID);
     roomID = data.roomName;
-    // console.log(loggedUser.username,'join room :',roomID);
     socket.join(roomID);
-    if(roomArray.indexOf(roomID) === -1){roomArray.push(roomID)};
+    let room = {
+      id: roomID,
+      player1: data.user,
+      player2: ''
+    };
+    if(roomArray.indexOf(roomID) === -1){roomArray.push(room)};
     console.log('array check', roomArray)
     playerNumberOne = true;
-    io.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
+    io.to(roomID).emit('room-service', [room.id, room.player1, room.player2]);
+    // playerOne = "";
+    // playerTwo = "";
     socket.emit('player-number', true);
-    io.emit('room-list', roomArray);
+    io.emit('room-list', roomArray.map(r => r.id));
 
     /* check moves player 1 */
       socket.on('move-playerone', function (message) {
@@ -87,13 +93,20 @@ console.log('user connected');
     roomID = data.roomName;
       console.log(roomID)
     socket.join(roomID)
-     io.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
+    console.log('player joining, roomArray:', roomArray)
+    let room = roomArray.find(r => r.id == roomID);
+    console.log('Found room with id', roomID, room, 'changing player2');
+    room.player2 = data.user
+    console.log('Room after changing player2:', room);
+     io.to(roomID).emit('room-service', [room.id, room.player1, room.player2]);
+     // playerOne = "";
+     // playerTwo = "";
       console.log('room clear')
     clientsInRoom = io.nsps['/'].adapter.rooms[roomID].length;
 
     if(clientsInRoom === 2){
       roomArray.splice(roomArray.indexOf(roomID),1)
-      io.emit('room-list', roomArray)
+      io.emit('room-list', roomArray.map(r => r.id))
         console.log('room complet')
       }
     /* check moves player 2 */
@@ -131,7 +144,7 @@ console.log('user connected');
 
     }
     socket.leave(data.roomName);
-    io.emit('room-list', roomArray)
+    io.emit('room-list', roomArray.map(r => r.id))
 
   })
 
