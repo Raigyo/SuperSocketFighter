@@ -2,6 +2,17 @@ import React, {Component} from 'react';
 import './App.css';
 import io from "socket.io-client";
 
+let soundMusic = './sounds/ryu-stage.mp3';
+let soundChunKick = './sounds/chun-kick.mp3';
+let soundChunKo = './sounds/chun-ko.mp3';
+let soundChunWin = './sounds/chun-win.mp3';
+let soundEndRound = './sounds/endround.mp3';
+let soundRyuFinal = './sounds/ryu-final.mp3';
+let soundRyuHadoken = './sounds/ryu-hadoken.mp3';
+let soundRyuKick = './sounds/ryu-kick.mp3';
+let soundRyuKo = './sounds/ryu-ko.mp3';
+let soundStrikes = './sounds/strikes.mp3';
+
 /* const with that displays the move of the player */
 const PlayerCard =({color, symbol})=> {
   const style ={
@@ -72,6 +83,7 @@ class App extends Component {
       })
       console.log(this.state.playerRed);
     });
+    this.play(soundMusic, true);
     //this.decideWinner();
   }
 
@@ -88,6 +100,19 @@ class App extends Component {
         this.runGame();
       }
     });*/
+  }
+
+  play = (url, loop) => {
+    let stream = new Audio(url);
+    stream.preload = 'none';
+    stream.loop = loop;
+  	stream.play();
+  }
+
+  stop = (url) => {
+    let stream = new Audio(url);
+    stream.pause(url);
+    stream.currentTime = 0;
   }
 
   /* function to make a move*/
@@ -121,6 +146,7 @@ class App extends Component {
           //playerOneHasPlayed: false,
           //playerTwoHasPlayed: false,
         })
+        //this.play(soundMusic, true);
   }
 
   /* function to decide winner + if the round is finished */
@@ -138,6 +164,8 @@ class App extends Component {
       nextRound: false,
     })
     if (playerRed === playerBlue){
+      this.play(soundChunKick, false);
+      this.play(soundRyuKick, false);
       return " It's a draw !"
     }
     if (
@@ -153,21 +181,33 @@ class App extends Component {
           (playerRed==="rock" && playerBlue ==="scissors")
         )
         {
+          //Ryu strikes
           if (this.state.healthChun !== 20){
             this.setState((preState) => {return {scoreRed : preState.scoreRed + 1, healthChun : preState.healthChun -20, animationPlayerOne: "p1-won", animationPlayerTwo: "p2-lost"}});
+            this.play(soundRyuKick, false);
             return this.props.playerOne + " strikes ! "
           }
+          //Ryu wins
           if (this.state.healthChun === 20){
             this.setState((preState) => {return {scoreRed : preState.scoreRed + 1, healthChun : preState.healthChun -20, nextMove: false, nextFight: false, nextRound: true, animationPlayerOne: "p1-wonRound", animationPlayerTwo: "p2-looseRound"}});
+            this.stop(soundMusic);
+            this.play(soundChunKo, false);
+            this.play(soundEndRound, false);
             return this.props.playerOne + " wins ! "
           }
         }
+    //Chun-li strikes
     if (this.state.healthRyu !== 20){
       this.setState((preState) => {return {scoreBlue : preState.scoreBlue + 1, healthRyu : preState.healthRyu -20, animationPlayerTwo: "p2-won", animationPlayerOne: "p1-lost"}});
+      this.play(soundChunKick, false);
       return this.props.playerTwo + " strikes !"
     }
+    //Chun-li wins
     if (this.state.healthRyu === 20){
       this.setState((preState) => {return {scoreBlue : preState.scoreBlue + 1, healthRyu : preState.healthRyu -20, nextMove: false, nextFight: false, nextRound: true, animationPlayerOne: "p1-looseRound", animationPlayerTwo: "p2-wonRound"}});
+      this.stop(soundMusic);
+      this.play(soundRyuKo, false);
+      this.play(soundEndRound, false);
       return this.props.playerTwo + " wins !"
     }
   }

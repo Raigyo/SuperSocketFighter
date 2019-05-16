@@ -4,6 +4,8 @@ import io from "socket.io-client";
 import  Game from './game';
 
 let socket;
+let soundCoin = './sounds/coin.mp3';
+let soundCoinRoom = './sounds/coin-02.mp3';
 
 class Chat extends Component{
   constructor(props){
@@ -29,12 +31,25 @@ class Chat extends Component{
     socket = io(this.state.endpoint);
   }
 
+  play = (url) => {
+    let stream = new Audio(url);
+    stream.preload = 'none';
+    stream.play();
+  }
+
+  stop = (url) => {
+    let stream = new Audio(url);
+    stream.preload = 'none';
+    stream.stop(url);
+  }
+
   login(event) {
     event.preventDefault();
     if (this.state.username !== ""){this.setState({session: true})
     socket.emit('user-login', {username: this.state.username})
     this.setState({username: ''});
     }
+    this.play(soundCoin);
   }
 
   createRoom(event){
@@ -44,11 +59,13 @@ class Chat extends Component{
 
     }
      this.setState({room: ''});
+     this.play(soundCoinRoom);
   }
 
   joinRoom(roomName){
     socket.emit('joinRoom', {roomName: roomName, user: this.state.username})
     if (!this.state.room) {this.setState({room_check: true})};
+    this.play(soundCoinRoom);
   }
 
   leaveRoom(roomName){
