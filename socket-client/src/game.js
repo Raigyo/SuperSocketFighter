@@ -82,7 +82,8 @@ class App extends Component {
         playerTwoHasPlayed: data.playerTwoHasPlayed,
         nextFight: true,
       })
-      console.log(this.state.playerRed);
+      //console.log(this.state.playerRed);
+      //this.runGame();
     });
     this.play(soundMusic, true);
     //this.decideWinner();
@@ -245,20 +246,22 @@ class App extends Component {
     let buttonNextRound;
     if (nextMove) {
       //buttonNextDisplay = <div className="hud"><button className="myButton" onClick={this.nextMove}>NEXT MOVE</button></div>
-
       let counter =0;
-        buttonNextDisplay = <div className="hud">Next move in: {this.state.counterNextMove}</div>
-      let myInterval = setInterval(() => {
-        counter++;
 
-        if(counter > 10){
-          clearInterval(myInterval)
-          this.nextMove();
-        }
-      },500)
+      buttonNextDisplay = <div className="hud">Ready for next move!</div>
+      let myInterval = setInterval(() => {
+      counter++;
+      //this.setState({counterNextMove: counter})
+      //counterDecrease--;
+      if(counter > 5){
+        clearInterval(myInterval)
+        this.nextMove();
+      }
+    },500)
     }
     if (nextFight) {
-      buttonNextDisplay =  <div className="hud"><button className="myButton" onClick={this.runGame}>FIGHT!</button></div>
+      //buttonNextDisplay =  <div className="hud"><button className="myButton" onClick={this.runGame}>FIGHT!</button></div>
+      this.runGame();
     }
     if (buttonsChoice) {
       buttonsChoiceDisplay =
