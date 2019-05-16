@@ -214,6 +214,7 @@ class App extends Component {
 
   /* function to launch a game */
   runGame = () => {
+    this.play(soundStrikes, false);
     this.setState({nextFight: false, buttonsChoice: false})
     this.setState({winner: this.decideWinner()})
   }
@@ -258,7 +259,7 @@ class App extends Component {
     if (buttonsChoice) {
       buttonsChoiceDisplay =
       <div className="buttonsGroup" id="buttonsGroup">
-          <div className="hud">Choose your weapon:</div>
+          <div className="hud">Choose your move:</div>
           <input className = "buttonsPlay" alt = "button rock" onClick={() => this.playerChoice(0)} type = "image" src = "./img/rock.png" />
           <input className = "buttonsPlay" alt = "button paper" onClick={() => this.playerChoice(1)} type = "image" src = "./img/paper.png" />
           <input className = "buttonsPlay" alt = "button scissors" onClick={() => this.playerChoice(2)} type = "image" src = "./img/scissors.png" />
