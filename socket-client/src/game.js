@@ -65,6 +65,7 @@ class App extends Component {
       healthChun: 100,
       playerOneHasPlayed: false,
       playerTwoHasPlayed: false,
+      counterNextMove: 10,
     }
     this.socket = props.socket
   }
@@ -243,15 +244,18 @@ class App extends Component {
     let buttonsChoiceDisplay;
     let buttonNextRound;
     if (nextMove) {
-      buttonNextDisplay = <div className="hud"><button className="myButton" onClick={this.nextMove}>NEXT MOVE</button></div>
-      /*let counter =0;
+      //buttonNextDisplay = <div className="hud"><button className="myButton" onClick={this.nextMove}>NEXT MOVE</button></div>
+
+      let counter =0;
+        buttonNextDisplay = <div className="hud">Next move in: {this.state.counterNextMove}</div>
       let myInterval = setInterval(() => {
         counter++;
+
         if(counter > 10){
           clearInterval(myInterval)
           this.nextMove();
         }
-      },500)*/
+      },500)
     }
     if (nextFight) {
       buttonNextDisplay =  <div className="hud"><button className="myButton" onClick={this.runGame}>FIGHT!</button></div>
