@@ -31,8 +31,6 @@ console.log('user connected');
   let roomID;
   let playerNumber;
 
-
-
   /**
    * Connexion d'un utilisateur via le formulaire :
    *  - sauvegarde du user
@@ -62,6 +60,7 @@ console.log('user connected');
     playerNumberOne = true;
     io.to(roomID).emit('room-service', [roomID, playerOne, playerTwo]);
     socket.emit('player-number', true);
+    io.emit('room-list', roomArray);
 
     /* check moves player 1 */
       socket.on('move-playerone', function (message) {
@@ -76,6 +75,7 @@ console.log('user connected');
         }
       });
   });
+
   /**
    * Réception de l'événement 'joinRoom-service' et réémission vers tous les utilisateurs
    */
@@ -93,6 +93,7 @@ console.log('user connected');
 
     if(clientsInRoom === 2){
       roomArray.splice(roomArray.indexOf(roomID),1)
+      io.emit('room-list', roomArray)
         console.log('room complet')
       }
     /* check moves player 2 */
