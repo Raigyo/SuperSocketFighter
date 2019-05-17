@@ -9,6 +9,7 @@
 ## Group
 
 [Vincent Chilot](https://github.com/Raigyo)
+
 [Matthieu Jasselette](https://github.com/MatthieuJasselette)
 
 ## About
@@ -57,5 +58,7 @@ See the [rules](https://www.youtube.com/watch?v=_PUEoDYpUyQ) of *Rock, Paper, Sc
 ## Demo
 
 [See demo on Heroku](https://supersocketfighter.herokuapp.com/)
+
+## Note
 
 **Sprites sheets and sound effects are the property of Capcom and are used for demonstration purpose only**
