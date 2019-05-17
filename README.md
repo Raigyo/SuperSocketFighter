@@ -41,7 +41,7 @@ by:
 
 You will need this command line in package.json:
 
-`"build": "cd socket-client && npm install && npm run build"_`
+`"build": "cd socket-client && npm install && npm run build"`
 
 In the root:
 * `npm install` to install dependencies
