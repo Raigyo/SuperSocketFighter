@@ -28,24 +28,24 @@ You will need [node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/
 
 **To play localy**
 
-In servers.js (root) replace
+In *servers.js* (root) replace
 
-_endpoint: undefined, //Heroku_
+`_endpoint: undefined, //Heroku_`
 by:
-_endpoint: "localhost:8000", //Local_
+`_endpoint: "localhost:8000", //Local_`
 
-* Use _node server.js_ in the *root* to launch the server
-* Use _npm start_ in the directory *socket-client*
+* Use `node server.js` in the *root* to launch the server
+* Use `npm start` in the directory *socket-client*
 
 **To build the app for Heroku:**
 
 You will need this command line in package.json:
 
-_"build": "cd socket-client && npm install && npm run build"_
+`"build": "cd socket-client && npm install && npm run build"_`
 
 In the root:
-* _npm install_ to install dependencies
-* _npm run build_ to build for production
+* `npm install` to install dependencies
+* `npm run build` to build for production
 
 ## How to play?
 
