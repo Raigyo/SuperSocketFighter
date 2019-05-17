@@ -30,9 +30,9 @@ You will need [node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/
 
 In *servers.js* (root) replace
 
-`_endpoint: undefined, //Heroku_`
+`endpoint: undefined, //Heroku`
 by:
-`_endpoint: "localhost:8000", //Local_`
+`endpoint: "localhost:8000", //Local`
 
 * Use `node server.js` in the *root* to launch the server
 * Use `npm start` in the directory *socket-client*
