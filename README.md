@@ -1,5 +1,7 @@
 # Becode - Group Work - online videogame - Super Socket fighter
 
+![Becode logo](https://raw.githubusercontent.com/Raigyo/react-character-manager/master/img/becode-logo.png)
+
 *May 2019*
 
 > 🔨 Group work to learn how to use node.js (server-side) and websockets (Socket IO)
