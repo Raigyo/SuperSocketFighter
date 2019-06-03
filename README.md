@@ -4,7 +4,7 @@
 
 *May 2019*
 
-> 🔨 Group work to learn how to use node.js (server-side) and websockets (Socket IO)
+> 🔨 Group work to learn how to use node.js (server-side) and websockets (Socket IO). [See demo on Heroku](https://supersocketfighter.herokuapp.com/)
 
 * * *
 
